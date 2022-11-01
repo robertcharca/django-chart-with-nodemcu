@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from principal_app.models import *
+from .models import *
 
 class SensorSerializer(serializers.ModelSerializer):
     class Meta:
