@@ -9,7 +9,7 @@ Chartjs.register(
     BarElement
 )
 
-var apiUrl = "http://127.0.0.1:8000/api/sensor/"
+var apiUrl = "http://127.0.0.1:8000/sensorvalues/"
 
     
 var options = {
@@ -49,7 +49,7 @@ const ShowingData = () => {
 
     useEffect(() => {
         const fetchData = async() => {
-            const sensors = []
+            const dates = []
             const values = []
 
             await fetch(apiUrl).then((data) => {
@@ -60,16 +60,16 @@ const ShowingData = () => {
                 console.log(res)
 
                 for(const i of res){
-                    sensors.push(i.sensor_name)
-                    values.push(i.sensor_value)
+                    dates.push(i.date_registered)
+                    values.push(i.value)
                 }
 
-                console.log("arrays", sensors, values)
+                console.log("arrays", dates, values)
 
                 setData({
-                    labels: sensors,
+                    labels: dates,
                     datasets: [{
-                        label: '# of Votes',
+                        label: 'quantity',
                         data: values,
                         backgroundColor: [
                             'rgba(255, 99, 132, 0.2)',
