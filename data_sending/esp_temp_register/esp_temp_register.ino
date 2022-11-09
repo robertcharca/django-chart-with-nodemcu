@@ -5,18 +5,23 @@
 #include <WiFiClient.h>
 #include <WiFiClientSecure.h>
 
-//About Wifi
-char* networkName = "MARY CLARO";
-char* networkPassword = "charcafamilyWMRJM50";
+//For Wifi and connections
+char* networkName = "network";
+char* networkPassword = "password";
 
-char* url = "http://192.168.0.10:8000/sensorvalues/";
+char* url = "http://ipaddress:port/sensorvalues/";
 
-//Stuff for temperature sensor
+//For temperature sensor
 int pinAlertRequest = D2;
 int sensor = A0;
 
 float temperature;
 float voltage;
+
+//For concurrency algorithm
+unsigned long lastTime = 0;
+unsigned long actualTime = 0;
+unsigned long waitTime = 300000;
 
 WiFiServer server(80);
 
@@ -44,42 +49,47 @@ void setup() {
 }
 
 void loop() {
-  // wait for WiFi connection
-  if(WiFi.status()== WL_CONNECTED) {
+  
+  actualTime = millis();
 
-    WiFiClient client;  
-    HTTPClient http;
-  
-    String jsonResult;
-    int response;
-  
+  if(actualTime - lastTime >= waitTime){
+    if(WiFi.status()== WL_CONNECTED) {
+
+      WiFiClient client;  
+      HTTPClient http;
     
-    DynamicJsonDocument doc(1024);
-    doc["sensor"] = 1;
-    doc["value"] = 2.50;
-    serializeJson(doc, jsonResult);
-  
-    http.begin(client, url);
-    http.addHeader("Content-Type", "application/json");
-  
-    Serial.println(jsonResult);
+      String jsonResult;
+      int response;
     
-    response = http.POST(jsonResult);
-  
-    if(response > 0){
-      Serial.println("Status code: " + String(response));
-  
-      if(response == 200){
-        String reponse = http.getString();
+      
+      DynamicJsonDocument doc(1024);
+      doc["sensor"] = 1;
+      doc["value"] = 2.50;
+      serializeJson(doc, jsonResult);
+    
+      http.begin(client, url);
+      http.addHeader("Content-Type", "application/json");
+    
+      Serial.println(jsonResult);
+      
+      response = http.POST(jsonResult);
+    
+      if(response > 0){
+        Serial.println("Status code: " + String(response));
+    
+        if(response == 200){
+          String reponse = http.getString();
+          Serial.println(response);
+        }
+      } else {
         Serial.println(response);
       }
-    } else {
-      Serial.println(response);
+    
+      http.end();
     }
   
-    http.end();
+  
   }
-  delay(60000);
   /*
   analogRead(sensor);
   
