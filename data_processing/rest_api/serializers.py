@@ -12,4 +12,4 @@ class SensorDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = SensorData
         fields = "__all__"
-        read_only_fields = ['date_registered']
+        read_only_fields = ['time_registered', 'date_registered']
