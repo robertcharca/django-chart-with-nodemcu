@@ -7,11 +7,13 @@ function App() {
     <div className="App">
       <nav class="navbar navbar-dark bg-dark">
         <div class="container-fluid">
-          <span class="navbar-brand mb-0 h1">Navbar</span>
+          <span class="navbar-brand mb-0 h1">Charts</span>
         </div>
       </nav>
 
-      <div style={{height: 850, width: 850}}>
+      <h3 style={{margin:30}}>Data from temperature sensor</h3>
+
+      <div style={{height: 900, width: 900, margin:"auto"}}>
         <ShowingData />
       </div>
       
