@@ -1,9 +1,9 @@
-#include <ESP8266HTTPClient.h>
 
-#include <ArduinoJson.h>
-#include <ESP8266WiFi.h>
 #include <WiFiClient.h>
+#include <ESP8266WiFi.h>
+#include <ArduinoJson.h>
 #include <WiFiClientSecure.h>
+#include <ESP8266HTTPClient.h>
 
 //For Wifi and connections
 char* networkName = "network";
@@ -54,72 +54,34 @@ void loop() {
 
   if(actualTime - lastTime >= waitTime){
     if(WiFi.status()== WL_CONNECTED) {
-
-      WiFiClient client;  
-      HTTPClient http;
+      analogRead(sensor);
+  
+      voltage = sensor * (5.0 / 1023.0);
+      temperature = voltage * 100;
     
-      String jsonResult;
-      int response;
-    
-      
-      DynamicJsonDocument doc(1024);
-      doc["sensor"] = 1;
-      doc["value"] = 2.50;
-      serializeJson(doc, jsonResult);
-    
-      http.begin(client, url);
-      http.addHeader("Content-Type", "application/json");
-    
-      Serial.println(jsonResult);
-      
-      response = http.POST(jsonResult);
-    
-      if(response > 0){
-        Serial.println("Status code: " + String(response));
-    
-        if(response == 200){
-          String reponse = http.getString();
-          Serial.println(response);
-        }
-      } else {
-        Serial.println(response);
-      }
-    
-      http.end();
+      httpDataPostRequest(temperature);  
     }
   
-  
   }
-  /*
-  analogRead(sensor);
   
-  voltage = sensor * (5.0 / 1023.0);
-  temperature = voltage * 100;
-
-  Serial.println(temperature);
-  delay(1000);
-  */
 }
 
-/*
-void httpDataPostRequest() {
+void httpDataPostRequest(float temperatureValue) {
   WiFiClient client;  
   HTTPClient http;
 
   String jsonResult;
   int response;
 
-  String url = "http://127.0.0.1:8000/sensorvalues/";
-
   http.begin(client, url);
   http.addHeader("Content-Type", "application/json");
 
   DynamicJsonDocument doc(1024);
   doc["sensor"] = 1;
-  doc["value"] = 18.50;
+  doc["value"] = temperatureValue;
   serializeJson(doc, jsonResult);
 
-  //Serial.println(jsonResult);
+  Serial.println(jsonResult);
   
   response = http.POST(jsonResult);
 
@@ -136,5 +98,4 @@ void httpDataPostRequest() {
 
   http.end();
   
-  
-}*/
+}
