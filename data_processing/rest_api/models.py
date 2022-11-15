@@ -22,5 +22,6 @@ class Sensor(models.Model):
 
 class SensorData(models.Model):
     sensor = models.ForeignKey(Sensor, on_delete=models.CASCADE)
+    time_registered = models.TimeField(auto_now=True)
     date_registered = models.DateField(auto_now=True)
-    value = models.IntegerField()
+    value = models.DecimalField(max_digits=5, decimal_places=2)
