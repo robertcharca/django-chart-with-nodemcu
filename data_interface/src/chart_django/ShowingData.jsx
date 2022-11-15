@@ -7,7 +7,7 @@ Chartjs.register(
     LinearScale,
 )
 
-var apiUrl = "http://127.0.0.1:8000/sensorvalues/"
+var apiUrl = "http://djangourl:8000/sensorvalues/"
 
     
 var options = {
