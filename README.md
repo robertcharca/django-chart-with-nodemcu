@@ -8,7 +8,19 @@ Here you can see the necessary steps for installing all tools in this project. I
 
 ## NodeMCU-M (ESP8266)
 
-Still in progress.
+### Installing ESP8266 
+
+In your Arduino IDE, go to `File`, in your upper menu, and select `Preferences`.
+
+Inside of your "Preferences" window, go to `Additional Boards Manager URLs` and paste this link: 
+
+    https://arduino.esp8266.com/stable/package_esp8266com_index.json
+
+If you already have one board, type a comma to add the link given before.
+
+When you've applied this link, go to `Tools` > `Board` > `Boards Manager...`. Search "esp8266" and install this board (from 2.7.4 to forward is recommended).
+
+Following these steps would be enough for just executing the .ino file and testing it with the server. If you want to see a detailed explanation of the http requests in ESP8266, you can go to `data_sending` directory. 
 
 ## Django
 
